@@ -1,0 +1,5 @@
+(declare-const bias Int)
+(assert (> bias 110))
+(assert (> bias 60))
+(check-sat)
+(get-model)

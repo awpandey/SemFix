@@ -62,37 +62,10 @@ void ApplyRepair(string P, string new_repair,int n){
   }
 }
 
-set<int> extract(char *P,char *E, char *T){
-	char buffer[300],line1[300],line2[300];
-	sprintf(buffer, "gcc %s.c  ", P);
-	system(buffer);
-	sprintf(buffer, "./a.out < %s > output  ", T );
-	system(buffer);
-	ifstream expected,output;
-	expected.open(E);
-	if(!expected)
-		cout<<"Can't open\n";
-	output.open("output");
-	if(!output)
-		cout<<"Can't open";
-	int i=0;
-	set<int> s;
-	while(!expected.eof()||!output.eof()){
-		i++;
-		expected.getline(line1,300);
-		output.getline(line2,300);
-		if(atoi(line1)!=atoi(line2))
-			s.insert(i);
-	}
-return s;
-}
+
 
 
 string GenerateRepairConstraint(char *program, char *expected, char *testCase){
-P=argv[1];
-E=argv[2];
-T=argv[3];
-failedTestCase=extract(program,expected,testCase);
 
 }
 
@@ -122,10 +95,11 @@ int main(int argc , char *argv[])
 	while(!failedTestCase.Empty())
 	{
 		suite=add(suite,failedTestCase);
+		failedTestCase.clear();
 		rc=RC.pop();	
 		new_repair=Repair(argv[1],suite,rc);
 		if(new_repair==NULL)
-			break;
+			continue;
 		ApplyRepair(program,new_repair,n);// apply repair in nth line
 		failedTestCase=ExtractFailedTests(program,expected_op,testCase);
 	}
