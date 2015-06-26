@@ -5,7 +5,7 @@ using namespace std;
 void genCons(){
 	ifstream all_op,path,testCase,expect;
 	ofstream constraint,temp;
-	int expected =0,j;
+	int expected =0,j,k=0;
 	char op[255],buffer[40];
 
 
@@ -28,8 +28,13 @@ void genCons(){
 		while (all_op.getline(op,16)){
 			j++;
 			if(atoi(op)==expected){
-				sprintf(buffer,"cat klee-out-0/test00000%d.pc >> CONSTRAINT",j);
+				sprintf(buffer,"CONSTRAINT%d",k);
+				constraint.open(buffer, std::fstream::app);
+				constraint << "(declare-const bias Int)\n";
+				constraint.close();
+				sprintf(buffer,"cat klee-out-0/test00000%d.pc >> CONSTRAINT%d",j,k);
 				system(buffer);
+				k++;
 			}
 		}
 		temp.close();
@@ -40,19 +45,6 @@ void genCons(){
 		testCase.close();
 		expect.close();
 }
-/*void genCons(){
-ifstream testCase;
-ofstream temp;
-char op[255];
-testCase.open("TestCase");
-while(testCase.getline(op,255)){
-temp.open("temp");
-temp << op;
-temp.close();
-system("klee -write-pcs traffic.bc temp ");
-}
-testCase.close();
-}*/
 main(){
 	genCons();
 	return 0;

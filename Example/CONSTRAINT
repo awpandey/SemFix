@@ -1,5 +1,0 @@
-(Constraint [(Slt 100  bias)]
-(Constraint [(Eq false(Slt 110  bias))]
-(Constraint []
-(Constraint [(Eq false(Slt 60  bias))]
-(Constraint []
